@@ -1,43 +1,94 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { useLocation } from 'wouter';
 import {
-  Activity, Bell, BriefcaseBusiness, ChevronDown, CircleHelp, Command, Database,
-  FileCheck2, GitBranch, LayoutDashboard, Menu, Network, Search, Settings2,
+  Activity, Bell, BookmarkCheck, BriefcaseBusiness, ChevronDown, CircleHelp, Command, Database,
+  DollarSign, Eye, FileCheck2, GitBranch, Layers, LayoutDashboard, Menu, Network, Search, Settings2,
   ShieldAlert, SlidersHorizontal, Sparkles, X, type LucideIcon,
 } from 'lucide-react';
 import { LiveIndicator } from '../overview/Status';
 import { intelligenceScenarios } from '@/data/intelligence';
+import { canonicalEventsList, matchCandidatePairs } from '@/data/canonical-matching-data';
+import { riskScoresList } from '@/data/quantitative-intelligence-data';
+import { earlyWarningsList, watchlistsMock } from '@/data/monitoring-intelligence-data';
+import { NotificationCenterDrawer } from '../monitoring/NotificationCenterDrawer';
+import { SystemMonitoringStatusModal } from '../monitoring/SystemMonitoringStatusModal';
 
 type NavItem = { label: string; path: string; icon: LucideIcon };
 const groups: { label?: string; items: NavItem[] }[] = [
   { items: [
     { label: 'Overview', path: '/overview', icon: LayoutDashboard },
+    { label: 'Executive Monitoring', path: '/monitoring', icon: Eye },
+    { label: 'Early Warnings', path: '/early-warnings', icon: Bell },
+    { label: 'Watchlists', path: '/watchlist', icon: BookmarkCheck },
+    { label: 'Alerts', path: '/alerts', icon: ShieldAlert },
+    { label: 'Risk Graph', path: '/risk-graph', icon: Network },
+  ] },
+  { label: 'RISK & QUANTITATIVE', items: [
+    { label: 'Risk Scores', path: '/risk/scores', icon: ShieldAlert },
+    { label: 'Risk Propagation', path: '/risk/propagation', icon: GitBranch },
+    { label: 'Risk Taxonomy', path: '/risk/taxonomy', icon: Network },
+    { label: 'Risk Overview', path: '/risk', icon: ShieldAlert },
+  ] },
+  { label: 'IMPACT & SCENARIOS', items: [
+    { label: 'Dollar Impact', path: '/impact', icon: DollarSign },
+    { label: 'Scenario Engine', path: '/impact/scenarios', icon: SlidersHorizontal },
+    { label: 'Impact Aggregation', path: '/impact/aggregation', icon: Layers },
+    { label: 'Exposure', path: '/exposure', icon: BriefcaseBusiness },
+  ] },
+  { label: 'INTELLIGENCE', items: [
     { label: 'Signals', path: '/signals', icon: Activity },
     { label: 'Canonical Events', path: '/events', icon: Sparkles },
-    { label: 'Risk', path: '/risk', icon: ShieldAlert },
-    { label: 'Exposure', path: '/exposure', icon: BriefcaseBusiness },
-    { label: 'Impact', path: '/impact', icon: SlidersHorizontal },
-    { label: 'Risk Graph', path: '/risk-graph', icon: Network },
-    { label: 'Early Warnings', path: '/warnings', icon: Bell },
-  ] },
-  { label: 'MONITOR', items: [{ label: 'Watchlist', path: '/watchlist', icon: FileCheck2 }] },
-  { label: 'INTELLIGENCE', items: [
     { label: 'Data Quality', path: '/data-quality', icon: Database },
     { label: 'Matching', path: '/matching', icon: GitBranch },
-    { label: 'Backtesting', path: '/backtesting', icon: Activity },
-    { label: 'Verification', path: '/verification', icon: FileCheck2 },
   ] },
   { label: 'WORKSPACE', items: [{ label: 'Settings', path: '/settings', icon: Settings2 }] },
 ];
 
 type SearchResult = { label: string; kind: string; path: string; description: string };
 const searchResults: SearchResult[] = [
+  { label: 'Executive Monitoring', kind: 'MONITORING', path: '/monitoring', description: 'Command center for continuous sensing & overnight changes' },
+  { label: 'Early Warnings Center', kind: 'EARLY WARNINGS', path: '/early-warnings', description: '18 active material change warnings' },
+  { label: 'Risk Propagation Timeline', kind: 'PROPAGATION', path: '/risk/propagation', description: 'External Event → Risk → BU → Exposure → Impact' },
+  { label: 'JPMorgan Executive Watchlist', kind: 'WATCHLIST', path: '/watchlist', description: 'Persistent tracking of 18 critical risk entities' },
+  { label: 'Alert Dispatch Center', kind: 'ALERTS', path: '/alerts', description: 'Configured user sentinel rules & deduplicated notifications' },
+  { label: 'Interactive Risk Graph', kind: 'GRAPH', path: '/risk-graph', description: 'Full perimeter causal intelligence map' },
+  ...earlyWarningsList.map((w) => ({
+    label: `${w.title} (${w.severity.toUpperCase()})`,
+    kind: 'WARNING',
+    path: `/early-warnings/${w.id}`,
+    description: `${w.eventTitle} · ${w.changeValue} · ${w.timeAgo}`,
+  })),
+  ...riskScoresList.map((rs) => ({
+    label: `${rs.eventTitle} (Score: ${rs.score})`,
+    kind: 'RISK SCORE',
+    path: `/risk/scores/${rs.id}`,
+    description: `Score: ${rs.score} (${rs.category}) · Prob: ${rs.probabilityPct.toFixed(1)}% · Exposure: $${rs.modeledExposureUsdM.toFixed(1)}M`,
+  })),
+  { label: 'Scenario Engine & Calibration', kind: 'SCENARIOS', path: '/impact/scenarios', description: 'Interactive probability & stress magnitude simulation' },
+  { label: 'Corporate Impact Aggregation', kind: 'AGGREGATION', path: '/impact/aggregation', description: 'JPMorgan Chase $142.6M exposure · $68.4M expected loss' },
+  { label: 'Potential Dollar Impact ($18.4M Downside)', kind: 'IMPACT', path: '/impact/IMP-FED-RATE-CUT', description: 'CE-000184 Fed rate cut · Commercial Banking & Markets' },
   ...intelligenceScenarios.map(({ signal, consensus, impact, id }) => ({
     label: signal.title,
     kind: 'SIGNAL',
     path: `/signals/${id}`,
     description: `${consensus.probabilityPct.toFixed(1)}% consensus · $${impact.downsideUsdM.toFixed(1)}M downside`,
   })),
+  ...canonicalEventsList.map((evt) => ({
+    label: evt.title,
+    kind: 'CANONICAL EVENT',
+    path: `/events/${evt.id}`,
+    description: `${evt.id} · ${evt.contractsCount} contracts · ${evt.identityConfidencePct.toFixed(1)}% confidence · ${evt.category}`,
+  })),
+  ...matchCandidatePairs.map((pair) => ({
+    label: `${pair.eventATitle} vs ${pair.eventBTitle}`,
+    kind: 'MATCHING CASE',
+    path: `/matching`,
+    description: `${pair.id} · ${pair.matchScorePct.toFixed(1)}% score · ${pair.status}`,
+  })),
+  { label: 'Federal Reserve rate cut 50bps', kind: 'CONTRACT', path: '/events/CE-000184', description: 'PM-FED-01928471 · Polymarket · 67.4%' },
+  { label: 'Brent crude >$120 Dec 2026', kind: 'CONTRACT', path: '/events/CE-000219', description: 'KS-OIL-120-2210 · Kalshi · 40.8%' },
+  { label: 'Data Freshness Monitor', kind: 'DATA QUALITY', path: '/data-quality', description: '96.1% fresh data · 37 stale contracts flagged' },
+  { label: 'Oracle Compatibility Audit', kind: 'DATA QUALITY', path: '/data-quality', description: '97.4% compatible · 12 unverified oracles' },
   { label: 'JPMorgan Chase', kind: 'COMPANY', path: '/exposure', description: 'Demo company exposure map' },
   { label: 'Supply Chain', kind: 'RISK', path: '/risk', description: '$7.8M potential exposure' },
 ];
@@ -45,6 +96,8 @@ const searchResults: SearchResult[] = [
 export function ExogenShell({ children }: { children: ReactNode }) {
   const [location, setLocation] = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -139,7 +192,7 @@ export function ExogenShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
         <div className="border-t border-[#1e2225] px-5 py-4">
-          <div className="flex items-center justify-between"><LiveIndicator compact /><span className="mono text-[9px] text-[#60686d]">12s</span></div>
+          <div className="flex items-center justify-between cursor-pointer hover:opacity-80 transition" onClick={() => setStatusModalOpen(true)} title="View system monitoring status"><LiveIndicator compact /><span className="mono text-[9px] text-[#60686d]">12s</span></div>
           <div className="mt-[8px] flex items-center justify-between text-[9px] text-[#60686d]"><span>MARKET DATA</span><span className="text-[#777f84]">DEMO · SIMULATED</span></div>
           <div className="mt-3 flex items-center gap-2 border-t border-[#1e2225] pt-3">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#363c40] bg-[#171a1d] text-[9px] font-semibold text-[#c6cbc8]">AM</div>
@@ -162,8 +215,8 @@ export function ExogenShell({ children }: { children: ReactNode }) {
             <Search size={13} /><span className="flex-1">Search events, companies, risks...</span><span className="hidden items-center gap-1 rounded border border-[#343a3e] px-[5px] py-[2px] text-[9px] text-[#858d91] md:flex"><Command size={10} /> K</span>
           </button>
           <div className="ml-auto flex shrink-0 items-center gap-3 sm:ml-0 sm:gap-5">
-            <div className="hidden sm:block"><LiveIndicator compact /></div>
-            <button type="button" data-testid="notifications-button" onClick={() => navigate('/warnings')} aria-label="View early warnings" className="relative rounded p-1.5 text-[#828a8f] hover:bg-[#171a1d] hover:text-[#e0e2de]"><Bell size={15} /><span className="absolute right-[4px] top-[4px] h-[5px] w-[5px] rounded-full bg-[#b8f34a]" /></button>
+            <div className="hidden sm:block cursor-pointer hover:opacity-80 transition" onClick={() => setStatusModalOpen(true)} title="View system monitoring status"><LiveIndicator compact /></div>
+            <button type="button" data-testid="notifications-button" onClick={() => setNotifOpen(true)} aria-label="View notifications & early warnings" className="relative rounded p-1.5 text-[#828a8f] hover:bg-[#171a1d] hover:text-[#e0e2de]"><Bell size={15} /><span className="absolute right-[4px] top-[4px] h-[5px] w-[5px] rounded-full bg-[#b8f34a]" /></button>
             <button type="button" data-testid="top-help-button" onClick={() => navigate('/settings')} aria-label="Help" className="hidden rounded p-1.5 text-[#828a8f] hover:bg-[#171a1d] hover:text-[#e0e2de] sm:block"><CircleHelp size={15} /></button>
             <div className="flex h-[27px] w-[27px] items-center justify-center rounded-full border border-[#393f43] bg-[#171a1d] text-[9px] font-semibold text-[#c5cac7]">AM</div>
           </div>
@@ -173,6 +226,9 @@ export function ExogenShell({ children }: { children: ReactNode }) {
           EXOGEN INTELLIGENCE · DEMONSTRATION ENVIRONMENT · JPMORGAN CHASE DATA IS MOCK DATA
         </div>
       </div>
+
+      <NotificationCenterDrawer isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
+      <SystemMonitoringStatusModal isOpen={statusModalOpen} onClose={() => setStatusModalOpen(false)} />
 
       {searchOpen && (
         <div role="presentation" className="fixed inset-0 z-[60] flex items-start justify-center bg-black/70 px-4 pt-[12vh] backdrop-blur-[2px]" onMouseDown={(e) => { if (e.target === e.currentTarget) setSearchOpen(false); }}>

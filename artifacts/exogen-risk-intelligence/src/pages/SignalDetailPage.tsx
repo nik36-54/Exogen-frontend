@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useLocation } from 'wouter';
 import {
   Activity, ArrowDownRight, ArrowRight, ArrowUpRight, Building2, ChevronDown, CircleHelp,
   Clock3, FileCheck2, GitBranch, Landmark, Layers3, Link2, Radio, ShieldAlert,
@@ -150,6 +151,7 @@ export interface SignalDetailPageProps {
 }
 
 export default function SignalDetailPage({ scenario, onScenarioChange }: SignalDetailPageProps) {
+  const [, setLocation] = useLocation();
   const [activeDrawer, setActiveDrawer] = useState<DrawerMode>(null);
   const [activeStage, setActiveStage] = useState('signal');
   const [selectedContract, setSelectedContract] = useState<Contract | null>(null);
@@ -353,7 +355,11 @@ export default function SignalDetailPage({ scenario, onScenarioChange }: SignalD
               </div>
               <h3 className="max-w-3xl text-[19px] font-semibold leading-[1.35] tracking-[-.03em] text-[#e6ecdf] sm:text-[23px]">{scenario.canonicalEvent.title}</h3>
               <p className="mt-3 max-w-3xl text-[12px] leading-6 text-[#9ba79a]">{scenario.canonicalEvent.description}</p>
-              <button type="button" onClick={() => showWhy('event')} className="mt-4 inline-flex items-center gap-1.5 text-[10px] text-[#b8d887] hover:text-[#d2f69d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="event-match-explanation"><CircleHelp size={12} /> Why this match?</button>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button type="button" onClick={() => showWhy('event')} className="inline-flex items-center gap-1.5 text-[10px] text-[#b8d887] hover:text-[#d2f69d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="event-match-explanation"><CircleHelp size={12} /> Why this match?</button>
+                <button type="button" onClick={() => setLocation(`/events/${encodeURIComponent(scenario.canonicalEvent.id)}`)} className="inline-flex items-center gap-1.5 text-[10px] text-[#b8d887] hover:text-[#d2f69d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="inspect-canonical-event"><Sparkles size={12} /> Inspect Canonical Event →</button>
+                <button type="button" onClick={() => setLocation('/matching')} className="inline-flex items-center gap-1.5 text-[10px] text-[#b8d887] hover:text-[#d2f69d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="view-matching-analysis"><GitBranch size={12} /> View matching analysis →</button>
+              </div>
             </div>
             <div className="relative grid grid-cols-2 gap-x-4 gap-y-5 lg:grid-cols-1 lg:py-2">
               <div><div className="text-[9px] tracking-[.12em] text-[#81907e]">IDENTITY CONFIDENCE</div><div className="mono mt-1.5 text-[23px] text-[#c5ed83]">{scenario.canonicalEvent.identityConfidencePct.toFixed(1)}%</div></div>
@@ -422,7 +428,12 @@ export default function SignalDetailPage({ scenario, onScenarioChange }: SignalD
             </div>
             <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[#293134] pt-4">
               <p className="max-w-xl text-[11px] leading-5 text-[#8e999b]">{scenario.consensus.explanation}</p>
-              <button type="button" onClick={() => showWhy('consensus')} className="inline-flex items-center gap-1 text-[10px] text-[#adc87a] hover:text-[#d4f19a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="why-consensus"><CircleHelp size={12} /> Why this consensus</button>
+              <div className="flex items-center gap-3">
+                <button type="button" onClick={() => setLocation('/data-quality')} className="inline-flex items-center gap-1 text-[10px] text-[#b8f34a] hover:underline" data-testid="view-source-contracts">
+                  <span>View source contracts →</span>
+                </button>
+                <button type="button" onClick={() => showWhy('consensus')} className="inline-flex items-center gap-1 text-[10px] text-[#adc87a] hover:text-[#d4f19a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="why-consensus"><CircleHelp size={12} /> Why this consensus</button>
+              </div>
             </div>
             {whyOpen === 'consensus' && <WhyPanel title="WHY THIS CONSENSUS?" onClose={() => setWhyOpen(null)}>
               {scenario.consensus.venues.map((venue) => `${venue.venue} ${venue.weightPct}%`).join(' · ')}. Weights reflect market liquidity, data freshness, oracle quality and venue reliability. Confidence is {scenario.consensus.confidence.toLowerCase()} because the observed range is {lowP.toFixed(1)}%–{highP.toFixed(1)}%.
@@ -547,7 +558,7 @@ export default function SignalDetailPage({ scenario, onScenarioChange }: SignalD
 
       <section id="score" className="mb-12 scroll-mt-5">
         <SectionHeading eyebrow="06 / COMPOSITE ASSESSMENT" title="Exogen risk score" detail="A weighted score makes the assessment comparable; its components remain visible and inspectable."
-          action={<WhyButton label="Risk score" onClick={() => showWhy('risk-score')} />} />
+          action={<div className="flex items-center gap-2"><button type="button" onClick={() => setLocation('/risk/scores/RS-FED-RATE-CUT')} className="inline-flex items-center gap-1 rounded border border-[#3b4440] bg-[#111618] px-2 py-1 text-[10px] text-[#b8f34a] hover:bg-[#1a201b]">Quantitative Detail →</button><WhyButton label="Risk score" onClick={() => showWhy('risk-score')} /></div>} />
         <article className="panel grid gap-6 p-5 sm:p-6 lg:grid-cols-[.7fr_1.3fr] lg:items-center">
           <div className="flex items-center gap-5">
             <div className="relative flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-[5px] border-[#293134] sm:h-32 sm:w-32" style={{ background: `conic-gradient(#b8f34a ${riskScore.score * 3.6}deg, #293134 0deg)` }}>
@@ -581,7 +592,7 @@ export default function SignalDetailPage({ scenario, onScenarioChange }: SignalD
       <section id="impact" className="mb-12 scroll-mt-5">
         <SectionHeading eyebrow="07 / FINANCIAL CONSEQUENCE" title="Potential dollar impact"
           detail="Illustrative scenario model—not actual financial exposure, loss, or a forecast for JPMorgan."
-          action={<WhyButton label="Dollar impact" onClick={() => showWhy('dollar-impact')} />} />
+          action={<div className="flex items-center gap-2"><button type="button" onClick={() => setLocation('/impact/IMP-FED-RATE-CUT')} className="inline-flex items-center gap-1 rounded border border-[#596440] bg-[#171d15] px-2 py-1 text-[10px] text-[#b8f34a] hover:bg-[#20291a]">Quantitative Model →</button><WhyButton label="Dollar impact" onClick={() => showWhy('dollar-impact')} /></div>} />
         <article className="relative overflow-hidden rounded-[9px] border border-[#596440] bg-[#151a14]">
           <div className="absolute right-0 top-0 h-full w-[34%] border-l border-[#30382a] bg-[#171c15]" />
           <div className="relative grid gap-7 p-5 sm:p-7 xl:grid-cols-[.82fr_1.18fr]">
@@ -640,7 +651,14 @@ export default function SignalDetailPage({ scenario, onScenarioChange }: SignalD
       <section className="mb-12">
         <SectionHeading eyebrow="EVIDENCE & MODEL AUDIT" title="Calculation provenance"
           detail="Trace the inputs behind consensus, risk and impact without crowding the executive view."
-          action={<button type="button" onClick={() => setActiveDrawer('provenance')} className="inline-flex items-center gap-1.5 text-[10px] text-[#b9d783] hover:text-[#d8f1a7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="view-provenance">Open provenance <ArrowUpRight size={12} /></button>} />
+          action={
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={() => setLocation(`/events/${encodeURIComponent(scenario.canonicalEvent.id)}`)} className="inline-flex items-center gap-1 text-[10px] text-[#b8f34a] hover:underline" data-testid="view-event-resolution">
+                <span>View event resolution →</span>
+              </button>
+              <button type="button" onClick={() => setActiveDrawer('provenance')} className="inline-flex items-center gap-1.5 text-[10px] text-[#b9d783] hover:text-[#d8f1a7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b8f34a]" data-testid="view-provenance">Open provenance <ArrowUpRight size={12} /></button>
+            </div>
+          } />
         <div className="panel grid gap-3 p-4 sm:grid-cols-3 sm:p-5">
           <div className="flex items-start gap-3"><Layers3 size={14} className="mt-0.5 text-[#9eb56e]" /><div><div className="text-[9px] font-semibold tracking-[.12em] text-[#7c8787]">SOURCE SET</div><div className="mt-1.5 text-[11px] text-[#bbc4c1]">{scenario.provenance.sourceSummary.join(' · ')}</div></div></div>
           <div className="flex items-start gap-3"><FileCheck2 size={14} className="mt-0.5 text-[#9eb56e]" /><div><div className="text-[9px] font-semibold tracking-[.12em] text-[#7c8787]">SNAPSHOT</div><div className="mt-1.5 text-[11px] text-[#bbc4c1]">{scenario.provenance.snapshotAvailable ? 'Available' : 'Not available'} · {scenario.provenance.calculatedAt}</div></div></div>
