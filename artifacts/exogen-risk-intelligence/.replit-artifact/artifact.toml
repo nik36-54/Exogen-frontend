@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "EXOGEN Risk Intelligence"
+description = "An institutional event-risk intelligence dashboard for enterprise teams. The initial frontend foundation includes an executive risk overview, realistic JPMorgan Chase demo data, reusable risk components, interactive chart controls, and global command search."
+version = "1.0.0"
+id = "artifacts/exogen-risk-intelligence"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24769
+
+[services.development]
+run = "pnpm --filter @workspace/exogen-risk-intelligence run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/exogen-risk-intelligence", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/exogen-risk-intelligence/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24769"
+BASE_PATH = "/"

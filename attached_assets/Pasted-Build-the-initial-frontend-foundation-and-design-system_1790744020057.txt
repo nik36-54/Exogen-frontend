@@ -1,0 +1,926 @@
+Build the **initial frontend foundation and design system for EXOGEN**, an enterprise event-risk intelligence platform.
+
+Do NOT build the entire application yet.
+
+The goal of this first phase is to establish an exceptionally polished, premium, modern UI/UX system that we will use for the entire Exogen product later.
+
+---
+
+# PRODUCT CONTEXT
+
+Exogen converts external prediction-market signals into company-specific risk intelligence.
+
+The eventual product flow is:
+
+**Prediction Market Signal → Canonical Event → Risk → Company Exposure → Probability → Risk Score → Dollar Impact → Early Warning**
+
+The product is NOT a betting platform.
+
+It should feel like:
+
+* institutional intelligence
+* financial risk software
+* premium fintech
+* modern enterprise analytics
+* Bloomberg/Palantir-inspired information density
+* Linear/Stripe-inspired product polish
+
+Do NOT copy any existing company's UI.
+
+Create an original Exogen design language.
+
+---
+
+# PRIMARY DESIGN GOAL
+
+When someone opens Exogen, they should immediately think:
+
+> "This is serious financial intelligence software."
+
+It should NOT feel like:
+
+* sportsbook
+* casino
+* gambling application
+* crypto exchange
+* generic AI SaaS
+* futuristic neon dashboard
+* gaming interface
+
+The interface should be:
+
+**Elegant**
+**Minimal**
+**Precise**
+**Premium**
+**Analytical**
+**Trustworthy**
+**Modern**
+
+---
+
+# COLOR SYSTEM
+
+Use a dark institutional theme.
+
+### Background
+
+`#0A0A0B`
+
+### Surface
+
+`#111416`
+
+### Elevated surface
+
+`#171A1D`
+
+### Border
+
+`#24282C`
+
+### Primary text
+
+`#F5F5F2`
+
+### Secondary text
+
+`#92989E`
+
+### Muted text
+
+`#656B70`
+
+### EXOGEN SIGNATURE COLOR
+
+`#B8F34A`
+
+This is the primary brand accent.
+
+Use it carefully for:
+
+* active states
+* live signals
+* positive movement
+* selected navigation
+* important metrics
+* highlights
+* data changes
+
+Do NOT make the entire interface green.
+
+### Negative / downside
+
+`#FF5C5C`
+
+Use for negative risk or negative financial impact.
+
+### Secondary informational accent
+
+`#7C8CFF`
+
+Use sparingly.
+
+The dominant visual language must remain:
+
+**Black + Off-white + Exogen Lime**
+
+---
+
+# TYPOGRAPHY
+
+Use:
+
+**Geist** as the preferred font.
+
+If unavailable, use:
+
+**Inter**
+
+Use a monospace font such as:
+
+**Geist Mono**
+
+for:
+
+* percentages
+* dollar values
+* timestamps
+* IDs
+* technical values
+
+Examples:
+
+`61.42%`
+
+`$5,184,200`
+
+`09:42:18 UTC`
+
+Numbers should feel extremely precise and important.
+
+---
+
+# DESIGN RULES
+
+Use:
+
+* 8–10px border radius
+* subtle borders
+* minimal shadows
+* generous spacing
+* strong typography hierarchy
+* compact but readable information density
+* subtle hover states
+* subtle transitions
+
+Avoid:
+
+* excessive rounded cards
+* excessive glassmorphism
+* huge gradients
+* glowing neon effects
+* excessive shadows
+* colorful backgrounds
+* cartoon illustrations
+* emojis as UI icons
+* giant decorative graphics
+
+Use Lucide icons.
+
+---
+
+# APPLICATION SHELL
+
+Create the main Exogen application shell.
+
+Desktop-first.
+
+Structure:
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│ EXOGEN                 Search...             ● LIVE   User   │
+├─────────────┬───────────────────────────────────────────────┤
+│             │                                               │
+│ OVERVIEW    │                                               │
+│             │                                               │
+│ SIGNALS     │              MAIN CONTENT                     │
+│             │                                               │
+│ EVENTS      │                                               │
+│             │                                               │
+│ RISK        │                                               │
+│             │                                               │
+│ EXPOSURE    │                                               │
+│             │                                               │
+│ IMPACT      │                                               │
+│             │                                               │
+│ EARLY       │                                               │
+│ WARNINGS    │                                               │
+│             │                                               │
+│ ──────────  │                                               │
+│ WATCHLIST   │                                               │
+│             │                                               │
+│ ──────────  │                                               │
+│ DATA        │                                               │
+│             │                                               │
+│ VALIDATION  │                                               │
+│             │                                               │
+│ SETTINGS    │                                               │
+│             │                                               │
+│ ● LIVE      │                                               │
+│ Updated 12s │                                               │
+└─────────────┴───────────────────────────────────────────────┘
+```
+
+---
+
+# SIDEBAR
+
+Create a refined left sidebar.
+
+Logo:
+
+**EXOGEN**
+
+Use a clean typographic treatment.
+
+Navigation:
+
+```text
+Overview
+
+Signals
+
+Canonical Events
+
+Risk
+
+Exposure
+
+Impact
+
+Risk Graph
+
+Early Warnings
+
+────────────
+
+Watchlist
+
+────────────
+
+Data Quality
+
+Matching
+
+Backtesting
+
+Verification
+
+────────────
+
+Settings
+```
+
+Use simple Lucide icons.
+
+Selected navigation item:
+
+* subtle elevated background
+* Exogen lime indicator
+* white text
+
+Do not use giant colorful icons.
+
+---
+
+# TOP BAR
+
+Create a premium top navigation bar.
+
+Left:
+
+Current page / breadcrumb.
+
+Center:
+
+Global search.
+
+Search placeholder:
+
+`Search events, companies, risks...`
+
+Keyboard shortcut:
+
+`⌘ K`
+
+Right:
+
+```text
+● LIVE
+Notifications
+Help
+User avatar
+```
+
+The LIVE indicator should use a tiny Exogen-lime dot.
+
+---
+
+# COMMAND SEARCH
+
+Build a command-palette style search component.
+
+When opened:
+
+```text
+Search Exogen...
+
+⌘ K
+
+RECENT
+
+US Auto Tariff Increase
+JPMorgan Chase
+
+SEARCH
+
+Events
+Companies
+Risks
+Contracts
+```
+
+Use a clean modal.
+
+---
+
+# OVERVIEW PAGE
+
+Create the first real Exogen dashboard.
+
+Route:
+
+`/overview`
+
+This should be the main screen.
+
+Top heading:
+
+**Good morning.**
+
+Secondary text:
+
+**External risk changed overnight.**
+
+Do not use generic SaaS copy such as:
+
+"Welcome back to your dashboard."
+
+Make the product feel like intelligence software.
+
+---
+
+# EXECUTIVE METRIC CARDS
+
+Create four primary cards.
+
+### ACTIVE SIGNALS
+
+`24`
+
+`+4 today`
+
+### POTENTIAL EXPOSURE
+
+`$18.4M`
+
+`+12.8%`
+
+### HIGH IMPACT
+
+`7`
+
+`↑ 3 today`
+
+### CONNECTED RISKS
+
+`42`
+
+`8 newly elevated`
+
+The numbers should be large.
+
+Dollar exposure should be visually dominant.
+
+---
+
+# IMPORTANT
+
+Use realistic mock data for the UI.
+
+Do NOT connect real APIs yet.
+
+But structure the components so the mock data can later be replaced with backend API data.
+
+Do not hard-code calculations into UI components.
+
+---
+
+# WHAT CHANGED SECTION
+
+Create a section:
+
+## What changed
+
+Show a timeline/feed of external risk changes.
+
+Example item:
+
+```text
+● 4 min ago
+
+US Auto Tariff Increase
+
+Market probability
+57% → 61%
+
+Potential exposure
+$3.8M → $5.1M
+
+Supply Chain
+
+HIGH IMPACT
+```
+
+Second:
+
+```text
+● 18 min ago
+
+Rare Earth Export Restrictions
+
+Probability
+41% → 48%
+
+Potential exposure
+$1.8M → $2.7M
+
+Commodity / Supply Chain
+
+MEDIUM IMPACT
+```
+
+Third:
+
+```text
+● 32 min ago
+
+Fed Rate Cut
+
+Probability
+68% → 72%
+
+Potential exposure
+$620K → $840K
+
+Interest Rate Risk
+
+LOW IMPACT
+```
+
+Each item should be clickable.
+
+---
+
+# TOP IMPACT EVENTS
+
+Create a section:
+
+## Top impact events
+
+Create three premium event cards.
+
+Example:
+
+```text
+US Auto Tariff Increase
+
+61.4%
+Probability
+
++14.2%
+30D
+
+HIGH
+Risk
+
+$5.1M
+Potential impact
+
+Supply Chain
+
+KALSHI · POLYMARKET · OTHER
+
+View signal →
+```
+
+The `$5.1M` should be one of the strongest visual elements.
+
+This is a core Exogen design principle:
+
+**Impact > Probability > Event**
+
+---
+
+# EXPOSURE CHART
+
+Create:
+
+## Potential Exposure
+
+Large chart showing exposure over time.
+
+Allow:
+
+`24H   7D   30D   90D`
+
+Use a minimal chart.
+
+No unnecessary visual decoration.
+
+Use Exogen lime for the primary selected/current data.
+
+Historical/contextual data should remain neutral.
+
+---
+
+# EXPOSURE BREAKDOWN
+
+Create:
+
+## Exposure by risk
+
+Example:
+
+```text
+Supply Chain       $7.8M
+Revenue            $4.9M
+Credit             $2.7M
+Regulatory         $1.8M
+Market             $1.2M
+```
+
+Use horizontal proportional bars.
+
+---
+
+# RISK HEATMAP
+
+Create:
+
+## Risk exposure
+
+X-axis:
+
+Probability
+
+Y-axis:
+
+Severity
+
+Bubble size:
+
+Dollar exposure
+
+Example bubbles:
+
+```text
+HIGH
+
+        ●
+                 ●
+
+MEDIUM
+            ●
+
+LOW
+    ●                 ●
+
+       LOW       HIGH
+       Probability
+```
+
+Hovering over a bubble should show:
+
+```text
+US Auto Tariff
+
+Probability
+61.4%
+
+Severity
+High
+
+Potential exposure
+$5.1M
+```
+
+---
+
+# SIGNAL CARD COMPONENT
+
+Create a reusable `SignalCard`.
+
+Structure:
+
+```text
+● LIVE
+
+US Auto Tariff Increase
+
+61.4%
+Probability
+
++14.2%
+30D change
+
+$5.1M
+Potential impact
+
+HIGH
+Risk
+
+Supply Chain
+
+KALSHI · POLYMARKET
+
+View signal →
+```
+
+Make this component reusable throughout the application.
+
+---
+
+# METRIC CARD COMPONENT
+
+Create reusable:
+
+`MetricCard`
+
+It should support:
+
+* title
+* primary value
+* secondary value
+* trend
+* status
+* optional icon
+
+---
+
+# STATUS COMPONENTS
+
+Create reusable components:
+
+### LiveIndicator
+
+```text
+● LIVE
+```
+
+### RiskBadge
+
+```text
+LOW
+MEDIUM
+HIGH
+CRITICAL
+```
+
+### ConfidenceBadge
+
+```text
+HIGH
+MEDIUM
+LOW
+```
+
+### FreshnessIndicator
+
+```text
+Updated 12 sec ago
+```
+
+These should all follow the Exogen design system.
+
+---
+
+# CORE VISUAL LANGUAGE
+
+The most important concept in the interface is:
+
+```text
+EVENT
+  ↓
+RISK
+  ↓
+EXPOSURE
+  ↓
+$ IMPACT
+```
+
+Even though the full backend will eventually include:
+
+```text
+Prediction Market
+→ Contract
+→ Normalization
+→ Fingerprint
+→ Matching
+→ Canonical Event
+→ Venue Weighting
+→ Canonical Probability
+→ Risk Taxonomy
+→ Exposure Mapping
+→ Risk Score
+→ Dollar Impact
+→ Propagation
+→ Early Warning
+```
+
+Do NOT expose all of this on the first dashboard.
+
+The overview should remain executive-friendly.
+
+---
+
+# INTERACTION DESIGN
+
+Implement:
+
+* smooth page transitions
+* subtle card hover
+* number transitions
+* chart tooltips
+* filter interactions
+* command search
+* sidebar active states
+* responsive navigation
+* keyboard-friendly interactions
+
+Do not over-animate.
+
+The application should feel fast.
+
+---
+
+# RESPONSIVE
+
+Desktop-first.
+
+Support:
+
+* 1440px
+* 1280px
+* 1024px
+* tablet
+* mobile
+
+On mobile:
+
+Collapse the sidebar.
+
+Prioritize:
+
+1. Dollar impact
+2. Risk
+3. Probability
+4. Event
+5. Details
+
+---
+
+# COMPONENT ARCHITECTURE
+
+Use:
+
+React
+TypeScript
+Tailwind CSS
+shadcn/ui where appropriate
+Lucide icons
+Recharts or another lightweight charting library
+React Router
+
+Create reusable components.
+
+Suggested structure:
+
+```text
+src/
+  components/
+    layout/
+    navigation/
+    cards/
+    charts/
+    badges/
+    search/
+    tables/
+  pages/
+    Overview/
+    Signals/
+    Events/
+    Risk/
+    Exposure/
+    Impact/
+    EarlyWarnings/
+    DataQuality/
+    Matching/
+    Backtesting/
+    Verification/
+  data/
+    mock/
+  types/
+  hooks/
+  lib/
+  styles/
+```
+
+Keep the architecture clean and scalable.
+
+---
+
+# MOCK DATA
+
+Create realistic mock data for:
+
+* prediction market events
+* probabilities
+* market changes
+* risk categories
+* company exposures
+* dollar impact
+* confidence
+* timestamps
+* sources
+
+Use **JPMorgan Chase** as the demonstration company because the eventual backend will contain JPMorgan-specific exposure mapping.
+
+However, clearly structure this as demo/mock data.
+
+---
+
+# DO NOT BUILD YET
+
+Do NOT implement:
+
+* real Polymarket API
+* real database
+* authentication
+* real risk calculations
+* real Fellegi-Sunter matching
+* real dollar-impact calculations
+* real backend integration
+
+Those will come in later phases.
+
+The purpose of this phase is:
+
+**Build the visual foundation and core dashboard architecture correctly.**
+
+---
+
+# FINAL QUALITY BAR
+
+When finished, the result should look like a real enterprise intelligence product.
+
+It should feel:
+
+**Premium**
+**Minimal**
+**Institutional**
+**Analytical**
+**Modern**
+**Trustworthy**
+
+The defining visual signature:
+
+# Near-black + off-white + Exogen lime
+
+The defining information hierarchy:
+
+# $ IMPACT → RISK → PROBABILITY → EVENT
+
+The defining product flow:
+
+# EVENT → RISK → EXPOSURE → DOLLAR IMPACT
+
+Do not rush.
+
+Spend the effort on spacing, typography, hierarchy, component consistency, chart styling, hover states, and overall polish.
+
+Do not create a generic dashboard template.
+
+Create a distinctive **EXOGEN** product identity.

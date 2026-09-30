@@ -1,0 +1,1686 @@
+# EXOGEN — PROMPT 2
+
+## Build the Core Intelligence Flow: Signal → Contract → Canonical Event → Market Consensus → Risk → JPMorgan Exposure → Risk Score → Dollar Impact
+
+You have already completed **Prompt 1**, which established the Exogen design system, application shell, navigation, overview dashboard, reusable components, and visual language.
+
+Now build the **most important product experience in Exogen**.
+
+Do NOT redesign the existing application shell or replace the design system.
+
+Instead, extend the existing frontend and build the core intelligence workflow:
+
+**EXTERNAL SIGNAL**
+↓
+**MARKET CONTRACT**
+↓
+**CANONICAL EVENT**
+↓
+**MARKET CONSENSUS**
+↓
+**RISK**
+↓
+**JPMORGAN EXPOSURE**
+↓
+**RISK SCORE**
+↓
+**POTENTIAL DOLLAR IMPACT**
+
+This should feel like a serious institutional intelligence product—not a dashboard with cards.
+
+The user should be able to start with:
+
+> “Something changed in the external world.”
+
+and progressively understand:
+
+> “What changed → What exactly is happening → How certain are we → Why does it matter → What is exposed → How significant is the risk → How much money could be affected?”
+
+---
+
+# 1. CORE PRODUCT EXPERIENCE
+
+Build an interactive **Signal Intelligence Detail Experience**.
+
+When a user clicks a signal from the Overview or Signals page, open:
+
+`/signals/:signalId`
+
+The page should feel like entering an intelligence investigation.
+
+The experience should have a persistent top-level context:
+
+**Signal → Event → Risk → Exposure → Impact**
+
+Use a horizontal contextual breadcrumb / intelligence pipeline near the top:
+
+`Signal` → `Contract` → `Canonical Event` → `Consensus` → `Risk` → `Exposure` → `Impact`
+
+Each stage should be clickable.
+
+The current stage should be visually emphasized with the Exogen lime accent.
+
+The user must always understand where they are in the chain.
+
+---
+
+# 2. SIGNAL HEADER
+
+At the top of the detail page create a strong intelligence header.
+
+Example:
+
+### Federal Reserve cuts rates by 50+ bps before March 2027
+
+Show:
+
+* External Signal
+* Prediction Market
+* Current probability: `67.4%`
+* 30D change: `+12.8 pp`
+* Signal strength: `HIGH`
+* Freshness: `2m ago`
+* Market status: `LIVE`
+* Last updated timestamp
+
+Example visual hierarchy:
+
+```text
+FEDERAL RESERVE CUTS RATES BY 50+ BPS BEFORE MARCH 2027
+
+67.4%
+YES probability
+
++12.8 pp
+30D change
+
+HIGH
+Signal strength
+
+LIVE • Updated 2m ago
+```
+
+Do not make these look like gambling odds.
+
+Use language such as:
+
+* Probability
+* Signal
+* Consensus
+* Exposure
+* Risk
+* Impact
+* Confidence
+
+Avoid:
+
+* Bet
+* Betting
+* Odds
+* Wager
+* Payout
+* Win/Loss
+
+---
+
+# 3. SIGNAL → CONTRACT SECTION
+
+Create a section explaining the original market signal.
+
+Title:
+
+### Market Signal
+
+Show the source contract as a structured information panel.
+
+Example:
+
+```text
+SOURCE
+Polymarket
+
+CONTRACT
+Will the Federal Reserve cut rates by 50+ bps before March 2027?
+
+OUTCOME
+YES
+
+CURRENT PROBABILITY
+67.4%
+
+LIQUIDITY
+$2.8M
+
+VOLUME
+$18.4M
+
+FRESHNESS
+2 minutes
+
+RESOLUTION
+Official Federal Reserve decision
+
+STATUS
+Open
+```
+
+Include a small probability history chart.
+
+Chart:
+
+**Probability over time**
+
+X-axis:
+Time
+
+Y-axis:
+Probability %
+
+Show:
+
+* Current probability
+* Previous 24h
+* 7D
+* 30D
+
+Allow timeframe switching.
+
+Use subtle Exogen lime for the primary probability line.
+
+Do not overload the chart.
+
+---
+
+# 4. MARKET CONTRACT DETAILS
+
+Create a collapsible / expandable technical section:
+
+### Contract Details
+
+Show:
+
+* Contract ID
+* Market ID
+* Venue
+* Resolution source
+* Resolution date
+* Outcome definitions
+* Created timestamp
+* Updated timestamp
+* Liquidity
+* Volume
+* Source URL
+* Data freshness
+* Oracle compatibility
+
+Use monospace typography for IDs and technical values.
+
+Example:
+
+```text
+Contract ID
+pm_01928471
+
+Market ID
+fed-rate-cut-50bps
+
+Venue
+Polymarket
+
+Resolution Source
+Federal Reserve
+
+Oracle Compatibility
+TRUE
+
+Data Freshness
+2m 14s
+```
+
+Do not expose unnecessary technical information by default.
+
+Use progressive disclosure.
+
+---
+
+# 5. CANONICAL EVENT
+
+This is one of the most important concepts in Exogen.
+
+Clearly explain that the raw market contract is not necessarily the final event.
+
+Create a large section:
+
+## Canonical Event
+
+Example:
+
+> **Federal Reserve cuts benchmark interest rate by at least 50 basis points before March 2027**
+
+Below it show:
+
+```text
+CANONICAL EVENT
+
+Federal Reserve cuts benchmark interest rate
+by ≥50 bps before March 2027
+
+IDENTITY CONFIDENCE
+94.2%
+
+MATCH STATUS
+CANONICAL
+
+MATCHED CONTRACTS
+3
+
+SOURCE VENUES
+2
+```
+
+Create a visual relationship:
+
+```text
+Polymarket Contract
+        │
+        ├──────────────┐
+        │              │
+Kalshi Contract    Other Contract
+        │              │
+        └───────┬──────┘
+                ↓
+        CANONICAL EVENT
+```
+
+The canonical event should feel like the normalized truth layer of Exogen.
+
+---
+
+# 6. MATCHED CONTRACTS
+
+Add an expandable section:
+
+### Matched Market Contracts
+
+Create a table:
+
+| Venue      | Contract       | Probability | Liquidity | Freshness | Match |
+| ---------- | -------------- | ----------: | --------: | --------: | ----: |
+| Polymarket | Fed cut ≥50bps |       67.4% |     $2.8M |        2m |   98% |
+| Kalshi     | Fed cut ≥50bps |       64.9% |     $1.4M |        4m |   96% |
+| Other      | Fed cut ≥50bps |       65.7% |     $0.6M |        8m |   91% |
+
+Each row should be clickable.
+
+Clicking a contract opens a detail drawer.
+
+The drawer should show:
+
+* Original contract
+* Venue
+* Fingerprint
+* Match features
+* Match score
+* Resolution semantics
+* Oracle compatibility
+* Freshness
+* Liquidity
+
+---
+
+# 7. FINGERPRINT
+
+Create a technical expandable component:
+
+### Event Fingerprint
+
+Display:
+
+`F = (T, L, O, S)`
+
+Where:
+
+* T = Time
+* L = Location
+* O = Outcome
+* S = Subject
+
+Example:
+
+```text
+T
+Before March 2027
+
+L
+United States
+
+O
+Federal Funds Rate ↓ ≥50 bps
+
+S
+Federal Reserve
+```
+
+Show:
+
+**Identity confidence: 94.2%**
+
+Do not build the actual matching algorithm yet.
+
+This is frontend visualization using realistic mock data.
+
+---
+
+# 8. MARKET CONSENSUS
+
+Create a visually prominent section:
+
+# Market Consensus
+
+This is where Exogen should begin to feel different from a normal prediction-market viewer.
+
+Show:
+
+### Canonical Probability
+
+**66.1%**
+
+with a large probability visualization.
+
+Below:
+
+```text
+Polymarket       67.4%
+Kalshi           64.9%
+Other            65.7%
+
+Consensus       66.1%
+```
+
+Show the venue contribution / weighting.
+
+Example:
+
+```text
+POLYMARKET       52%
+KALSHI           31%
+OTHER            17%
+```
+
+Label this clearly:
+
+**Venue Weight**
+
+and not simply "market share."
+
+---
+
+# 9. VENUE WEIGHT EXPLANATION
+
+Add an expandable:
+
+### Why this consensus?
+
+Show:
+
+```text
+Venue Weight
+
+Polymarket
+52%
+
+Kalshi
+31%
+
+Other
+17%
+```
+
+Underneath explain:
+
+```text
+Weights are influenced by:
+• Market liquidity
+• Data freshness
+• Oracle quality
+• Venue reliability
+```
+
+Use a compact visual contribution chart.
+
+Add:
+
+**Consensus confidence: HIGH**
+
+---
+
+# 10. CROSS-VENUE DISAGREEMENT
+
+Create a separate signal:
+
+### Cross-Venue Agreement
+
+Example:
+
+```text
+ΔP
+2.5 pp
+
+LOW DISAGREEMENT
+```
+
+Explain:
+
+> Probability estimates across observed venues are currently closely aligned.
+
+For another mock state, support:
+
+* LOW
+* MODERATE
+* HIGH
+
+Do not make disagreement a decorative badge.
+
+Show why it matters.
+
+Example:
+
+```text
+LOW DISAGREEMENT
+Consensus is supported across venues.
+```
+
+---
+
+# 11. TRANSITION: EVENT → RISK
+
+Create a strong visual divider.
+
+Something like:
+
+```text
+EXTERNAL WORLD
+       ↓
+CANONICAL EVENT
+       ↓
+BUSINESS RISK
+```
+
+Then introduce:
+
+# Why does this matter to JPMorgan?
+
+This is the moment where Exogen moves from prediction-market intelligence into business intelligence.
+
+---
+
+# 12. RISK IDENTIFICATION
+
+Create:
+
+### Risk Classification
+
+Example:
+
+```text
+PRIMARY RISK
+
+Interest Rate Risk
+
+CATEGORY
+Market Risk
+
+RELATIONSHIP
+Direct
+
+IMPACT DIRECTION
+Potential Negative
+
+CONFIDENCE
+87%
+```
+
+Also support:
+
+* Credit Risk
+* Liquidity Risk
+* Regulatory Risk
+* Operational Risk
+* Market Risk
+* Counterparty Risk
+* Funding Risk
+* Strategic Risk
+* Macro Risk
+
+Use realistic mock data.
+
+---
+
+# 13. RISK EXPLANATION
+
+Create a prominent component:
+
+### Why does this event create risk?
+
+Example:
+
+> A larger-than-expected Federal Reserve rate cut can affect net interest income, securities valuations, deposit economics, loan demand, and broader market conditions.
+
+Then show the transmission chain:
+
+```text
+FED RATE CUT
+      ↓
+INTEREST RATE ENVIRONMENT
+      ↓
+NET INTEREST MARGIN
+      ↓
+JPMORGAN BUSINESS UNITS
+      ↓
+POTENTIAL FINANCIAL IMPACT
+```
+
+Make this interactive.
+
+Clicking each node should reveal more information.
+
+---
+
+# 14. JPMORGAN EXPOSURE
+
+Now create:
+
+# JPMorgan Exposure
+
+Use JPMorgan Chase as the demonstration company.
+
+Clearly label:
+
+**Demo company / mock exposure model**
+
+Do not imply these are real confidential JPMorgan exposures.
+
+Show:
+
+```text
+TOTAL POTENTIAL EXPOSURE
+
+$18.4M
+
+HIGH IMPACT SIGNALS
+7
+
+BUSINESS UNITS AFFECTED
+4
+```
+
+Then create business-unit cards.
+
+Example:
+
+### Commercial Banking
+
+Exposure:
+
+`$6.8M`
+
+Sensitivity:
+
+`HIGH`
+
+Impact:
+
+`Negative`
+
+Confidence:
+
+`82%`
+
+---
+
+### Markets
+
+Exposure:
+
+`$5.1M`
+
+Sensitivity:
+
+`MEDIUM`
+
+Impact:
+
+`Mixed`
+
+Confidence:
+
+`79%`
+
+---
+
+### Asset & Wealth Management
+
+Exposure:
+
+`$3.7M`
+
+Sensitivity:
+
+`MEDIUM`
+
+Impact:
+
+`Mixed`
+
+Confidence:
+
+`74%`
+
+---
+
+### Consumer & Community Banking
+
+Exposure:
+
+`$2.8M`
+
+Sensitivity:
+
+`LOW`
+
+Impact:
+
+`Potentially Positive`
+
+Confidence:
+
+`68%`
+
+---
+
+# 15. EXPOSURE MAPPING
+
+Create a visual:
+
+```text
+CANONICAL EVENT
+Federal Reserve Rate Cut
+        │
+        ↓
+INTEREST RATE RISK
+        │
+        ├───────────────┐
+        ↓               ↓
+Commercial Banking    Markets
+        │               │
+      $6.8M           $5.1M
+        │               │
+        └───────┬───────┘
+                ↓
+          $11.9M exposure
+```
+
+The user should immediately understand:
+
+**Event → Risk → Business Unit → Exposure**
+
+---
+
+# 16. DIRECT VS INDIRECT RISK
+
+Create a component:
+
+### Transmission Type
+
+Show:
+
+**DIRECT**
+
+or
+
+**INDIRECT**
+
+For the mock example:
+
+```text
+Direct exposure
+↓
+Interest-rate-sensitive business activity
+```
+
+and separately:
+
+```text
+Indirect exposure
+↓
+Market repricing
+↓
+Client behavior
+↓
+Business-unit impact
+```
+
+Use different visual treatment, but remain subtle.
+
+---
+
+# 17. POSITIVE / NEGATIVE IMPACT
+
+Support impact direction:
+
+* Positive
+* Negative
+* Mixed
+* Uncertain
+
+Example:
+
+```text
+Impact Direction
+
+Commercial Banking
+NEGATIVE
+
+Markets
+MIXED
+
+Asset & Wealth Management
+MIXED
+```
+
+Do not reduce the system to a simple green/red dashboard.
+
+Use explanatory text.
+
+---
+
+# 18. RISK SCORE
+
+Now create one of the strongest components in the entire application.
+
+# Exogen Risk Score
+
+Display:
+
+**78 / 100**
+
+**HIGH**
+
+But do NOT present the score as a black-box number.
+
+Show its components:
+
+```text
+Probability
+66%
+
+Severity
+72%
+
+Exposure
+84%
+
+Propagation
+61%
+
+Confidence
+87%
+```
+
+Use a clean horizontal contribution visualization.
+
+Then create:
+
+### Why is this risk score high?
+
+Example explanation:
+
+> The event has a high market consensus probability, meaningful JPMorgan exposure, and multiple connected business-unit transmission paths. Cross-venue agreement is currently strong.
+
+This explanation should be dynamically generated from the mock data.
+
+---
+
+# 19. RISK SCORE BREAKDOWN
+
+Create expandable technical details:
+
+```text
+Risk Score
+
+Probability Factor
+0.66
+
+Severity Factor
+0.72
+
+Exposure Factor
+0.84
+
+Propagation Factor
+0.61
+
+Confidence Factor
+0.87
+```
+
+Then:
+
+```text
+Composite Risk Score
+78
+```
+
+Important:
+
+Do NOT hardcode the frontend as the final source of truth.
+
+Create a typed calculation model so the backend can replace the mock calculation later.
+
+---
+
+# 20. DOLLAR IMPACT
+
+This should be the visual climax.
+
+Create:
+
+# Potential Dollar Impact
+
+Large number:
+
+**$18.4M**
+
+Then show scenario analysis.
+
+### Base Case
+
+`$8.2M`
+
+### Downside
+
+`$18.4M`
+
+### Severe
+
+`$31.7M`
+
+### Expected Impact
+
+`$12.1M`
+
+Use clear labels.
+
+Do not present these numbers as factual JPMorgan financial exposure.
+
+Add:
+
+**Illustrative model output**
+
+---
+
+# 21. IMPACT CALCULATION
+
+Create a clean calculation visualization:
+
+```text
+EVENT PROBABILITY
+66.1%
+
+×
+
+EXPOSURE
+$27.8M
+
+×
+
+SCENARIO MAGNITUDE
+65%
+
+↓
+
+POTENTIAL IMPACT
+$11.9M
+```
+
+The actual formula should be represented as a frontend mock calculation model that can later be replaced by the backend.
+
+Do not bury the calculation.
+
+Users need to understand:
+
+**Where did this number come from?**
+
+---
+
+# 22. IMPACT RANGE
+
+Create a visual range:
+
+```text
+$0
+│
+├──────── Base
+│      $8.2M
+│
+├──────────────── Downside
+│                $18.4M
+│
+├──────────────────────── Severe
+│                         $31.7M
+│
+$40M
+```
+
+Make this interactive.
+
+Clicking a scenario updates the supporting explanation panel.
+
+---
+
+# 23. "WHY?" INTERACTION
+
+This is extremely important.
+
+Every major output should have a small:
+
+**Why?**
+
+interaction.
+
+For example:
+
+`67.4% Probability  [Why?]`
+
+Clicking Why opens:
+
+```text
+WHY THIS PROBABILITY?
+
+3 observed market contracts
+2 venues
+Weighted by liquidity,
+freshness and venue quality.
+
+Consensus:
+66.1%
+
+Cross-venue disagreement:
+2.5 pp
+
+Confidence:
+HIGH
+```
+
+Similarly:
+
+`Risk Score 78 [Why?]`
+
+opens the risk explanation.
+
+And:
+
+`$18.4M [Why?]`
+
+opens the dollar-impact calculation.
+
+This should become a core Exogen UX pattern.
+
+---
+
+# 24. PROVENANCE DRAWER
+
+Create a reusable right-side drawer:
+
+### Calculation Provenance
+
+When opened, show:
+
+```text
+SOURCE
+
+Polymarket
+Kalshi
+Other
+
+MATCHING
+
+Canonical Event ID
+CE-000184
+
+Identity Confidence
+94.2%
+
+CONSENSUS
+
+P_M
+66.1%
+
+ΔP
+2.5 pp
+
+RISK
+
+Risk Category
+Interest Rate Risk
+
+Relationship
+Direct
+
+EXPOSURE
+
+Business Units
+4
+
+IMPACT
+
+Scenario
+Downside
+
+Potential Impact
+$18.4M
+```
+
+At the bottom:
+
+```text
+Last calculated
+2 minutes ago
+
+Data snapshot
+Available
+
+Model version
+v0.1
+
+Engine version
+v0.1
+```
+
+Use monospace typography for technical identifiers.
+
+---
+
+# 25. TECHNICAL DETAILS DRAWER
+
+Create another reusable drawer:
+
+### Technical Details
+
+Include:
+
+* Signal ID
+* Contract ID
+* Canonical Event ID
+* Fingerprint
+* Match score
+* Fellegi-Sunter score
+* Oracle compatibility
+* Venue weights
+* Consensus probability
+* Delta P
+* Risk score
+* Exposure model
+* Scenario model
+* Calculation timestamp
+
+This should be hidden by default.
+
+The normal executive experience should remain clean.
+
+---
+
+# 26. FINAL "INTELLIGENCE SUMMARY"
+
+At the bottom of the page create:
+
+# Exogen Intelligence Summary
+
+Example:
+
+```text
+WHAT CHANGED
+
+Probability of a ≥50 bps Fed cut increased
+12.8 percentage points over the last 30 days.
+
+WHY IT MATTERS
+
+The event maps to interest-rate risk across
+multiple JPMorgan business units.
+
+WHAT IS EXPOSED
+
+4 business units with an estimated
+$27.8M modeled exposure.
+
+RISK
+
+78 / 100 — HIGH
+
+POTENTIAL IMPACT
+
+$18.4M downside scenario.
+
+CONFIDENCE
+
+HIGH
+```
+
+Then show:
+
+**View propagation →**
+
+**View related risks →**
+
+**Add to watchlist →**
+
+---
+
+# 27. FULL INTELLIGENCE CHAIN
+
+Create a final persistent visualization:
+
+```text
+┌──────────────┐
+│   SIGNAL     │
+│   67.4%      │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│   CONTRACT   │
+│  Polymarket  │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│  CANONICAL   │
+│    EVENT     │
+│   94.2%      │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│  CONSENSUS   │
+│   66.1%      │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│     RISK     │
+│    78/100    │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│   EXPOSURE   │
+│   $27.8M     │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│    IMPACT    │
+│   $18.4M     │
+└──────────────┘
+```
+
+This is the signature Exogen visualization.
+
+It should feel like the product's defining interaction.
+
+---
+
+# 28. INTERACTION DESIGN
+
+The page must support progressive disclosure.
+
+Default:
+
+**Executive-level understanding**
+
+Click:
+
+**Analytical details**
+
+Click again:
+
+**Technical/provenance details**
+
+The user should never be overwhelmed by technical information.
+
+Use:
+
+* drawers
+* expandable sections
+* hover states
+* tooltips
+* contextual explanations
+* clickable nodes
+* smooth transitions
+
+Avoid excessive animations.
+
+Animations should communicate state changes and navigation, not decoration.
+
+---
+
+# 29. NAVIGATION BEHAVIOR
+
+The following should be clickable:
+
+### Signal
+
+→ Signal detail
+
+### Contract
+
+→ Contract drawer
+
+### Canonical Event
+
+→ Canonical event detail
+
+### Matched Contract
+
+→ Contract detail
+
+### Risk
+
+→ Risk detail
+
+### Business Unit
+
+→ Exposure detail
+
+### Risk Score
+
+→ Score explanation
+
+### Dollar Impact
+
+→ Impact calculation
+
+### Propagation
+
+→ Risk graph / propagation page
+
+### Provenance
+
+→ Provenance drawer
+
+---
+
+# 30. MOCK DATA ARCHITECTURE
+
+Do NOT scatter hardcoded values throughout JSX.
+
+Create typed mock data.
+
+Example conceptual types:
+
+```ts
+Signal
+Contract
+CanonicalEvent
+MarketConsensus
+Risk
+Exposure
+RiskScore
+DollarImpact
+PropagationNode
+Provenance
+```
+
+Create relationships between them.
+
+Example:
+
+```text
+Signal
+  ↓
+Contract[]
+  ↓
+CanonicalEvent
+  ↓
+MarketConsensus
+  ↓
+Risk[]
+  ↓
+Exposure[]
+  ↓
+RiskScore
+  ↓
+DollarImpact
+```
+
+This is important because the backend will eventually replace the mock layer.
+
+---
+
+# 31. API-READY DESIGN
+
+Do NOT connect to the real backend yet.
+
+Do NOT build:
+
+* Polymarket API integration
+* Kalshi API integration
+* database
+* authentication
+* real matching engine
+* real Fellegi-Sunter calculations
+* real risk engine
+* real JPMorgan exposure calculations
+
+Those belong to later implementation stages.
+
+However, structure the frontend as though APIs already exist.
+
+For example:
+
+```ts
+getSignal(signalId)
+getContracts(signalId)
+getCanonicalEvent(eventId)
+getMarketConsensus(eventId)
+getRisk(eventId)
+getExposure(eventId, companyId)
+getRiskScore(eventId, companyId)
+getDollarImpact(eventId, companyId)
+getProvenance(eventId)
+```
+
+Use mock implementations for now.
+
+---
+
+# 32. DEMO SCENARIO
+
+Create at least **3 realistic mock intelligence scenarios** so the interface does not feel static.
+
+### Scenario 1 — Interest Rate
+
+Federal Reserve rate cut
+
+High probability
+
+High JPMorgan exposure
+
+High risk
+
+---
+
+### Scenario 2 — Oil Price Shock
+
+Crude oil rises above a specified threshold
+
+Medium probability
+
+Energy / macro exposure
+
+Mixed downstream impact
+
+---
+
+### Scenario 3 — Regulatory Event
+
+Major financial regulation passes
+
+Lower probability
+
+High potential severity
+
+Large regulatory exposure
+
+---
+
+The user should be able to switch between scenarios.
+
+The UI should update the entire intelligence chain.
+
+---
+
+# 33. LOADING STATES
+
+Create realistic skeleton states for:
+
+* Signal
+* Contract
+* Canonical event
+* Consensus
+* Risk
+* Exposure
+* Impact
+
+Use subtle skeleton animations.
+
+---
+
+# 34. ERROR STATES
+
+Create useful error states.
+
+Example:
+
+```text
+CONSENSUS UNAVAILABLE
+
+Exogen could not calculate a reliable
+cross-venue consensus.
+
+Reason:
+Insufficient fresh market data.
+
+View source contracts →
+```
+
+Another:
+
+```text
+EXPOSURE MODEL UNAVAILABLE
+
+The event has been identified,
+but no company exposure mapping is currently available.
+
+View canonical event →
+```
+
+Do not simply display generic "Something went wrong."
+
+---
+
+# 35. RESPONSIVE DESIGN
+
+Desktop is the primary experience.
+
+Support:
+
+* 1440px+
+* 1280px
+* 1024px
+* tablet
+* mobile
+
+On smaller screens:
+
+* collapse sidebar
+* convert multi-column sections into stacked sections
+* convert wide tables into horizontally scrollable containers
+* preserve the intelligence hierarchy
+* keep probability, risk and impact visible
+
+---
+
+# 36. VISUAL DESIGN RULES
+
+Continue using the existing Exogen design system from Prompt 1.
+
+Colors:
+
+```text
+Background       #0A0A0B
+Surface          #111416
+Elevated         #171A1D
+Border           #24282C
+
+Primary text     #F5F5F2
+Secondary text   #92989E
+Muted text       #656B70
+
+Exogen accent    #B8F34A
+Negative         #FF5C5C
+Informational    #7C8CFF
+```
+
+Typography:
+
+* Geist
+* Inter fallback
+* Geist Mono for technical values
+
+Keep:
+
+* sharp hierarchy
+* restrained borders
+* minimal shadows
+* 8–10px radius
+* compact spacing
+* analytical density
+
+Do NOT introduce a new visual style.
+
+Do NOT use:
+
+* neon gradients
+* glassmorphism
+* excessive blur
+* giant rounded cards
+* futuristic sci-fi typography
+* casino visuals
+* sportsbook visuals
+* crypto trading aesthetics
+* excessive green/red coloring
+* decorative 3D graphics
+
+---
+
+# 37. THE "WOW" STANDARD
+
+The finished experience should make a user understand Exogen's value within approximately **30 seconds**.
+
+A user should be able to answer:
+
+### What happened?
+
+A prediction-market probability changed.
+
+### What exactly is the event?
+
+Exogen normalized it into a canonical event.
+
+### How confident are we?
+
+Multiple venues agree and the data quality is strong.
+
+### Why does it matter?
+
+The event maps to a business risk.
+
+### What is exposed?
+
+Specific JPMorgan business units.
+
+### How significant is it?
+
+Risk Score.
+
+### How much could it matter financially?
+
+Potential Dollar Impact.
+
+### Can I verify it?
+
+Yes—through provenance and calculation details.
+
+That is the core Exogen experience.
+
+---
+
+# 38. IMPORTANT PRODUCT PRINCIPLE
+
+Do not build this as:
+
+**"A dashboard showing prediction markets."**
+
+Build it as:
+
+**"An intelligence system that translates external probability signals into business consequences."**
+
+The prediction market is the INPUT.
+
+The business impact is the OUTPUT.
+
+The entire UI should reinforce that relationship.
+
+The strongest visual hierarchy should therefore be:
+
+**$ IMPACT**
+↓
+**RISK**
+↓
+**EXPOSURE**
+↓
+**PROBABILITY**
+↓
+**EVENT**
+↓
+**SOURCE**
+
+---
+
+# 39. ACCEPTANCE CRITERIA
+
+Consider Prompt 2 complete only when:
+
+1. Clicking a signal opens a complete intelligence detail experience.
+2. The user can follow Signal → Contract → Canonical Event → Consensus → Risk → Exposure → Risk Score → Dollar Impact.
+3. Every stage is visually connected.
+4. Canonical event matching is clearly explained.
+5. Multiple contracts can map into one canonical event.
+6. Market consensus is clearly explained.
+7. Cross-venue disagreement is visible.
+8. Risk classification is visible.
+9. JPMorgan exposure is visible by business unit.
+10. Direct vs indirect transmission is represented.
+11. Risk score has a transparent breakdown.
+12. Dollar impact has scenario analysis.
+13. Every major number has a "Why?" explanation.
+14. Provenance is accessible.
+15. Technical details are available without overwhelming the default UI.
+16. The entire flow uses structured mock data rather than scattered hardcoded JSX.
+17. The architecture is ready for future API integration.
+18. At least 3 scenarios can be demonstrated.
+19. Loading and error states exist.
+20. The final result feels like institutional risk intelligence software—not a prediction-market frontend.
+
+---
+
+# FINAL QUALITY BAR
+
+Before finishing, review the entire flow as if you are a:
+
+* CFO
+* Chief Risk Officer
+* COO
+* Strategy executive
+* Institutional investor
+* Risk analyst
+
+Ask:
+
+> "Can I understand what changed, why it matters, what is exposed, and how much it could matter financially without needing to understand the underlying technology?"
+
+If yes, the UX is working.
+
+The final experience should communicate:
+
+**THE WORLD CHANGES → EXOGEN DETECTS IT → EXOGEN TRANSLATES IT → EXOGEN CONNECTS IT → EXOGEN QUANTIFIES IT.**
+
+Do not build the remaining Exogen modules yet.
+
+Focus on making this core intelligence flow exceptionally polished, interactive, explainable, and demo-ready.
