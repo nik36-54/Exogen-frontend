@@ -1,0 +1,8 @@
+{
+  "name": "EXOGEN Risk Intelligence",
+  "description": "An institutional event-risk intelligence dashboard for enterprise teams, monitoring external signals, company-specific exposure, and financial impact.",
+  "requestFramePermissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
