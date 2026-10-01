@@ -36,6 +36,18 @@ import EarlyWarningDetailPage from '@/pages/EarlyWarningDetailPage';
 import RiskPropagationPage from '@/pages/RiskPropagationPage';
 import WatchlistPage from '@/pages/WatchlistPage';
 import AlertsPage from '@/pages/AlertsPage';
+import ValidationOverviewPage from '@/pages/ValidationOverviewPage';
+import BacktestingPage from '@/pages/BacktestingPage';
+import BacktestDetailPage from '@/pages/BacktestDetailPage';
+import ProbabilityCalibrationPage from '@/pages/ProbabilityCalibrationPage';
+import HistoricalReplayPage from '@/pages/HistoricalReplayPage';
+import ModelPerformancePage from '@/pages/ModelPerformancePage';
+import EarlyWarningValidationPage from '@/pages/EarlyWarningValidationPage';
+import RiskScoreValidationPage from '@/pages/RiskScoreValidationPage';
+import MatchingValidationPage from '@/pages/MatchingValidationPage';
+import PropagationValidationPage from '@/pages/PropagationValidationPage';
+import ImpactValidationPage from '@/pages/ImpactValidationPage';
+import HistoricalEventDetailPage from '@/pages/HistoricalEventDetailPage';
 import { getIntelligenceScenario } from '@/data/intelligence';
 import type { IntelligenceScenario } from '@/types/intelligence';
 
@@ -84,6 +96,21 @@ function Router() {
   const businessUnitMatch = location.match(/^\/exposure\/business-unit\/([^/]+)$/);
   const unitId = businessUnitMatch ? decodeURIComponent(businessUnitMatch[1]) : null;
 
+  const backtestEventMatch = location.match(/^\/backtesting\/events\/([^/]+)$/);
+  const backtestEventId = backtestEventMatch ? decodeURIComponent(backtestEventMatch[1]) : null;
+
+  const backtestRunMatch = location.match(/^\/backtesting\/([^/]+)$/);
+  const rawBacktestRunId = backtestRunMatch ? decodeURIComponent(backtestRunMatch[1]) : null;
+  const isSpecialBacktestSubroute =
+    rawBacktestRunId === 'runs' ||
+    rawBacktestRunId === 'warnings' ||
+    rawBacktestRunId === 'risk-scores' ||
+    rawBacktestRunId === 'matching' ||
+    rawBacktestRunId === 'propagation' ||
+    rawBacktestRunId === 'impact' ||
+    rawBacktestRunId === 'events';
+  const backtestRunId = !isSpecialBacktestSubroute ? rawBacktestRunId : null;
+
   const overviewRoute = location === '/' || location === '/overview';
   const monitoringRoute = location === '/monitoring' || location === '/executive';
   const signalsRoute = location === '/signals';
@@ -92,7 +119,7 @@ function Router() {
   const dataQualityRoute = location === '/data-quality';
 
   const riskRoute = location === '/risk';
-  const riskScoresRoute = location === '/risk/scores' || location === '/risk/calibration';
+  const riskScoresRoute = location === '/risk/scores';
   const riskTaxonomyRoute = location === '/risk/taxonomy';
   const riskRelationshipsRoute = location === '/risk/relationships';
   const riskTransmissionRoute = location === '/risk/transmission';
@@ -106,10 +133,46 @@ function Router() {
   const exposureRoute = location === '/exposure';
   const riskGraphRoute = location === '/risk-graph';
 
+  // Validation layer routes (Prompt 7)
+  const validationRoute = location === '/validation';
+  const calibrationRoute = location === '/calibration';
+  const historicalReplayRoute = location === '/historical-replay';
+  const modelPerformanceRoute = location === '/model-performance';
+  const backtestWarningsRoute = location === '/backtesting/warnings';
+  const backtestRiskScoresRoute = location === '/backtesting/risk-scores';
+  const backtestMatchingRoute = location === '/backtesting/matching';
+  const backtestPropagationRoute = location === '/backtesting/propagation';
+  const backtestImpactRoute = location === '/backtesting/impact';
+  const backtestOverviewRoute = location === '/backtesting' || location === '/backtesting/runs';
+
   let page: ReactNode;
 
   if (overviewRoute) {
     page = <Overview />;
+  } else if (validationRoute) {
+    page = <ValidationOverviewPage />;
+  } else if (calibrationRoute) {
+    page = <ProbabilityCalibrationPage />;
+  } else if (historicalReplayRoute) {
+    page = <HistoricalReplayPage />;
+  } else if (modelPerformanceRoute) {
+    page = <ModelPerformancePage />;
+  } else if (backtestWarningsRoute) {
+    page = <EarlyWarningValidationPage />;
+  } else if (backtestRiskScoresRoute) {
+    page = <RiskScoreValidationPage />;
+  } else if (backtestMatchingRoute) {
+    page = <MatchingValidationPage />;
+  } else if (backtestPropagationRoute) {
+    page = <PropagationValidationPage />;
+  } else if (backtestImpactRoute) {
+    page = <ImpactValidationPage />;
+  } else if (backtestEventId) {
+    page = <HistoricalEventDetailPage eventId={backtestEventId} />;
+  } else if (backtestRunId) {
+    page = <BacktestDetailPage runId={backtestRunId} />;
+  } else if (backtestOverviewRoute) {
+    page = <BacktestingPage />;
   } else if (monitoringRoute) {
     page = <ExecutiveMonitoringPage />;
   } else if (earlyWarningId) {
@@ -236,7 +299,6 @@ function SignalDetailRoute({
 function DeferredWorkspaceView({ onBack }: { onBack: () => void }) {
   const [location] = useLocation();
   const labels: Record<string, string> = {
-    '/backtesting': 'Backtesting',
     '/verification': 'Verification',
     '/settings': 'Settings',
   };

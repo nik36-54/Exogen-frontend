@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { useLocation } from 'wouter';
 import {
-  Activity, Bell, BookmarkCheck, BriefcaseBusiness, ChevronDown, CircleHelp, Command, Database,
-  DollarSign, Eye, FileCheck2, GitBranch, Layers, LayoutDashboard, Menu, Network, Search, Settings2,
+  Activity, Bell, BookmarkCheck, BriefcaseBusiness, CheckCircle2, ChevronDown, CircleHelp, Command, Database,
+  DollarSign, Eye, FileCheck2, GitBranch, History, Layers, LayoutDashboard, Menu, Network, Search, Settings2,
   ShieldAlert, SlidersHorizontal, Sparkles, X, type LucideIcon,
 } from 'lucide-react';
 import { LiveIndicator } from '../overview/Status';
@@ -22,6 +22,13 @@ const groups: { label?: string; items: NavItem[] }[] = [
     { label: 'Watchlists', path: '/watchlist', icon: BookmarkCheck },
     { label: 'Alerts', path: '/alerts', icon: ShieldAlert },
     { label: 'Risk Graph', path: '/risk-graph', icon: Network },
+  ] },
+  { label: 'VALIDATION & EMPIRICAL', items: [
+    { label: 'Model Validation', path: '/validation', icon: CheckCircle2 },
+    { label: 'Backtesting', path: '/backtesting', icon: SlidersHorizontal },
+    { label: 'Calibration', path: '/calibration', icon: Activity },
+    { label: 'Historical Replay', path: '/historical-replay', icon: History },
+    { label: 'Model Performance', path: '/model-performance', icon: FileCheck2 },
   ] },
   { label: 'RISK & QUANTITATIVE', items: [
     { label: 'Risk Scores', path: '/risk/scores', icon: ShieldAlert },
@@ -46,6 +53,11 @@ const groups: { label?: string; items: NavItem[] }[] = [
 
 type SearchResult = { label: string; kind: string; path: string; description: string };
 const searchResults: SearchResult[] = [
+  { label: 'Model Validation Center', kind: 'VALIDATION', path: '/validation', description: 'Empirical backtest & calibration scorecard across all layers' },
+  { label: 'Walk-Forward Backtesting', kind: 'BACKTESTING', path: '/backtesting', description: 'Run and inspect historical event and warning evaluations' },
+  { label: 'Probability Calibration Curves', kind: 'CALIBRATION', path: '/calibration', description: 'Reliability diagrams & decile observed frequency error' },
+  { label: 'Historical Replay (Fed Rate Cut)', kind: 'REPLAY', path: '/historical-replay', description: 'Reconstruct what Exogen knew at each historical point in time' },
+  { label: 'Model Performance & Drift Scorecard', kind: 'PERFORMANCE', path: '/model-performance', description: 'Multi-version tracking & quarterly calibration drift' },
   { label: 'Executive Monitoring', kind: 'MONITORING', path: '/monitoring', description: 'Command center for continuous sensing & overnight changes' },
   { label: 'Early Warnings Center', kind: 'EARLY WARNINGS', path: '/early-warnings', description: '18 active material change warnings' },
   { label: 'Risk Propagation Timeline', kind: 'PROPAGATION', path: '/risk/propagation', description: 'External Event → Risk → BU → Exposure → Impact' },
