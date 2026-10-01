@@ -48,6 +48,7 @@ import MatchingValidationPage from '@/pages/MatchingValidationPage';
 import PropagationValidationPage from '@/pages/PropagationValidationPage';
 import ImpactValidationPage from '@/pages/ImpactValidationPage';
 import HistoricalEventDetailPage from '@/pages/HistoricalEventDetailPage';
+import LandingPage from '@/pages/LandingPage';
 import { getIntelligenceScenario } from '@/data/intelligence';
 import type { IntelligenceScenario } from '@/types/intelligence';
 
@@ -55,9 +56,8 @@ const queryClient = new QueryClient();
 
 function Router() {
   const [location, setLocation] = useLocation();
-  useEffect(() => {
-    if (location === '/') setLocation('/overview');
-  }, [location, setLocation]);
+
+  const isLandingRoute = location === '/' || location === '/landing';
 
   const signalMatch = location.match(/^\/signals\/([^/]+)$/);
   const signalId = signalMatch ? decodeURIComponent(signalMatch[1]) : null;
@@ -111,7 +111,7 @@ function Router() {
     rawBacktestRunId === 'events';
   const backtestRunId = !isSpecialBacktestSubroute ? rawBacktestRunId : null;
 
-  const overviewRoute = location === '/' || location === '/overview';
+  const overviewRoute = location === '/overview';
   const monitoringRoute = location === '/monitoring' || location === '/executive';
   const signalsRoute = location === '/signals';
   const eventsRoute = location === '/events';
@@ -144,6 +144,14 @@ function Router() {
   const backtestPropagationRoute = location === '/backtesting/propagation';
   const backtestImpactRoute = location === '/backtesting/impact';
   const backtestOverviewRoute = location === '/backtesting' || location === '/backtesting/runs';
+
+  if (isLandingRoute) {
+    return (
+      <RoutedErrorBoundary>
+        <LandingPage />
+      </RoutedErrorBoundary>
+    );
+  }
 
   let page: ReactNode;
 
